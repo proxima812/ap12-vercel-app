@@ -9,11 +9,17 @@ import { SITE_URL } from "./src/data/config";
 export default defineConfig({
   integrations: [tailwind(), sitemap(), robotsTxt()],
   site: SITE_URL,
+  output: 'server',
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
   markdown: {
-    syntaxHighlight: "shiki",
+    syntaxHighlight: 'shiki',
     shikiConfig: {
-      theme: "nord",
-      wrap: false
-    }
-  }
-});
+      theme: 'nord',
+      wrap: false,
+    },
+  },
+})
