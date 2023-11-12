@@ -16,6 +16,8 @@ type Props = {
   post: CollectionEntry<'posts'>
 }
 
+export const prerender = true
+
 const { post } = Astro.props
 const { Content } = await post.render()
 ---
