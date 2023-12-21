@@ -1,23 +1,47 @@
 ---
-import SEOTags from '@/components/seo/SEOTags.astro'
 import BlurCircle from '@/components/shared/BlurCircle.astro'
 import theme from '@/data/theme'
-import type { HeadTags } from '@/utils/types/HeadTags'
 import Header from '../components/Header.astro'
 
+import SEOTags from '@/components/seo/SEOTags.astro'
 import '@/styles/tailwind.css'
 
-export type Props = HeadTags
-
-const headTags = Astro.props
+interface Props {
+  name?: string
+  title?: any
+  type?: any
+  description?: any
+  heroImage?: string
+  locale?: string
+  tags?: string
+  canonicalURL?: any
+  author?: string
+}
+const {
+  name,
+  title,
+  type,
+  description,
+  heroImage,
+  locale = 'ru',
+  canonicalURL = new URL(Astro.url.pathname, Astro.site),
+} = Astro.props
 ---
 
 <!DOCTYPE html>
 <html lang="ru">
-  <SEOTags {...headTags} />
+  <SEOTags
+    title={title}
+    description={description}
+    name={name}
+    type={type}
+    heroImage={heroImage}
+    locale={locale}
+    canonicalURL={canonicalURL}
+  />
 
   <body
-    class="mx-auto flex min-h-screen max-w-[872px] flex-col gap-9 bg-neutral-950 px-10 py-8 text-sm text-neutral-400 md:gap-20 md:py-16"
+    class="mx-auto flex min-h-screen max-w-[872px] flex-col gap-9 bg-neutral-950 px-10 py-8 text-sm text-neutral-200 md:gap-20 md:py-16"
   >
     <Header />
     <BlurCircle position="top" color={theme.colors.blur.top} />

@@ -1,52 +1,62 @@
 ---
-import { SEO } from "astro-seo";
-import { SITE_URL } from "@/data/config";
-import type { HeadTags } from "@/utils/types/HeadTags";
+import { DEFAULT_DESCRIPTION, DEFAULT_TITLE } from '@/data/config'
+interface Props {
+  name?: string
+  title?: string
+  type?: any
+  description?: string
+  heroImage?: string
+  locale?: string
+  tags?: string
+  canonicalURL?: any
+  author?: string
+}
+const {
+  name,
+  title,
+  type,
+  description,
+  heroImage,
+  locale = 'ru',
+  canonicalURL = new URL(Astro.url.pathname, Astro.site),
+} = Astro.props
 
-type Props = HeadTags;
+/**
+ * Enforce some standard canonical URL formatting across the site.
+ */
+function formatCanonicalURL(url: string | URL) {
+  const path = url.toString()
+  const hasQueryParams = path.includes('?')
+  // If there are query params, make sure the URL has no trailing slash
+  if (hasQueryParams) {
+    path.replace(/\/?$/, '')
+  }
+  // otherwise, canonical URL always has a trailing slash
+  return path.replace(/\/?$/, hasQueryParams ? '' : '/')
+}
 
-const { title, description, noindex, og } = Astro.props;
+const defaultOgImage = `${Astro.site}defaultOgImage.png`
 
-const DEFAULT_TITLE_PAGE = "Анонимные Прокрастинаторы (АП) СНГ";
-const DEFAULT_DESCRIPTION_PAGE =
-  "Анонимные Прокрастинаторы (АП) - 12 шаговое сообщество";
-const DEFAULT_URL_SITE = SITE_URL;
-
-const openGraph = {
-  title: title || og?.title || DEFAULT_TITLE_PAGE,
-  type: og?.type || "website",
-  image: og?.image || "/opengraph-image.png",
-  alt: og?.alt || "Изображние к АП СНГ сайту",
-  url: DEFAULT_URL_SITE,
-  description: og?.description || DEFAULT_DESCRIPTION_PAGE,
-};
+const themeColor = '#fff'
 ---
 
 <head>
-  <SEO
-    charset="UTF-8"
-    title={title || DEFAULT_TITLE_PAGE}
-    description={description || DEFAULT_DESCRIPTION_PAGE}
-    noindex={noindex || false}
-    openGraph={{
-      basic: {
-        title: openGraph.title,
-        type: openGraph.type,
-        image: openGraph.image,
-      },
-      image: {
-        alt: openGraph.alt,
-      },
-    }}
-    extend={{
-      link: [
-        { rel: "icon", href: "/favicon.svg" },
-        { rel: "sitemap", href: "/sitemap-index.xml" },
-      ],
-      meta: [
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { name: "generator", content: Astro.generator },
-      ],
-    }}
-  />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>{title ?? DEFAULT_TITLE}</title>
+  <meta name="generator" content={Astro.generator} />
+  <meta name="theme-color" content={themeColor} />
+  <link rel="mask-icon" href="/favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="RSS" />
+  {canonicalURL && <link rel="canonical" href={formatCanonicalURL(canonicalURL)} />}
+  <meta name="description" content={description ?? DEFAULT_DESCRIPTION} />
+  <meta property="og:title" content={title ?? DEFAULT_TITLE} />
+  <meta property="og:type" content={type ? 'article' : 'website'} />
+  {canonicalURL && <meta property="og:url" content={formatCanonicalURL(canonicalURL)} />}
+  <meta property="og:locale" content={locale} />
+  <meta property="og:description" content={description ?? DEFAULT_DESCRIPTION} />
+  <meta property="og:site_name" content={name ?? DEFAULT_TITLE} />
+  <meta property="og:image" content={heroImage || defaultOgImage} />
 </head>

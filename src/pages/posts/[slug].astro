@@ -1,7 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import formatDate from '@/utils/formatDate'
-import { CollectionEntry, getCollection } from 'astro:content'
+import { getCollection } from 'astro:content'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts')
@@ -12,18 +12,14 @@ export async function getStaticPaths() {
   }))
 }
 
-type Props = {
-  post: CollectionEntry<'posts'>
-}
-
 export const prerender = true
 
 const { post } = Astro.props
 const { Content } = await post.render()
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
-  <main class="">
+<Layout title={post.data.title} description={post.data.description} type="article">
+  <main>
     <header role="presentation" class="mb-12">
       <h1 class="text-sm">
         {post.data.title} - {formatDate(post.data.publishedAt)}

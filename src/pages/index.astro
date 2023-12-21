@@ -1,14 +1,10 @@
 ---
-import { Image } from 'astro:assets'
 import { getCollection } from 'astro:content'
 
 import PostCard from '@/components/PostCard.astro'
-import SocialLinks from '@/components/SocialLinks.astro'
 import Link from '@/components/shared/Link.astro'
+import TGIcon from '@/components/shared/TGIcon.astro'
 import Layout from '@/layouts/Layout.astro'
-import convertAsteriskToStrongTag from '@/utils/convertAsteriskToStrongTag'
-
-import presentation from '@/data/presentation'
 
 const posts = (await getCollection('posts')).sort(function (first, second) {
   return second.data.publishedAt.getTime() - first.data.publishedAt.getTime()
@@ -17,31 +13,22 @@ const posts = (await getCollection('posts')).sort(function (first, second) {
 
 <Layout>
   <main class="flex flex-col gap-20">
-    <article class="flex flex-col gap-8 md:flex-row-reverse md:justify-end md:gap-12">
-      {
-        presentation.profile && (
-          <Image
-            src={presentation.profile}
-            class="w-1/4 self-center rounded-full"
-            alt="Your Profile"
-            width="200"
-            height="200"
-          />
-        )
-      }
-
-      <div class="flex flex-col gap-8">
-        <h1 class="text-3xl text-neutral-100">
-          {presentation.title}
-        </h1>
-
-        <h2
-          class="w-auto max-w-[60ch] leading-6"
-          set:html={convertAsteriskToStrongTag(presentation.description)}
-        />
-
-        <SocialLinks />
-      </div>
+    <article class="flex flex-col gap-5">
+      <h1
+        class="bg-gradient-to-r from-pink-400 to-indigo-600 bg-clip-text text-2xl font-bold text-transparent sm:text-4xl md:text-5xl"
+      >
+        Анонимные Прокрастинаторы
+      </h1>
+      <p class="md:text-lg">
+        <b>Анонимные Прокрастинаторы</b> - это сообщество, объединяющее мужчин и женщин, которые
+        делятся друг с другом своим <b>опытом</b>, <b>силами</b> и <b>надеждами</b> с целью
+        помочь себе и другим помочь преодолеть <b>прокрастинацию.</b>
+      </p>
+      <a
+        href="https://t.me/+nSWS3inC4gE2Njg6"
+        class="flex items-center gap-2 self-start rounded-full bg-sky-100 px-3 py-2 font-medium text-sky-700 transition-colors ease-linear hover:bg-sky-200"
+        ><TGIcon />Присоединиться к нам</a
+      >
     </article>
 
     <article class="flex flex-col gap-8">
