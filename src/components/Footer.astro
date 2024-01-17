@@ -1,0 +1,78 @@
+---
+import LinkTarget from "@/components/icons/LinkTarget.astro"
+import { links, moreLinks } from "@/data/links"
+import { getCollection } from "astro:content"
+
+const posts = (await getCollection("posts"))
+	.filter(post => !post.data.draft)
+	.sort((a, b) => new Date(a.data.pubDate) - new Date(b.data.pubDate))
+---
+
+<footer class="rounded-t-xl bg-zinc-50 py-5">
+	<div class="container mx-auto max-w-6xl px-5">
+		<div class="flex items-center justify-between">
+			<span class="font-bold">АП</span>
+			<p class="italic">"Вера без действий - мертва."</p>
+		</div>
+		<hr class="my-5 border-zinc-200/80" />
+		<div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+			<div>
+				<span class="font-bold text-zinc-600">Новости</span>
+				<ul class="mt-4 flex flex-col gap-1">
+					{
+						posts.map(post => (
+							<li class="self-start rounded-md bg-zinc-200/40 px-3 py-2 transition-all ease-linear hover:translate-x-[-1.24px] ">
+								<a href={`/posts/${post.slug}`}>{post.data.title}</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+			<div>
+				<span class="font-bold text-zinc-600">Ссылки</span>
+				<ul class="mt-4 flex flex-col gap-1">
+					{
+						links.map(link => (
+							<li class="self-start transition-all ease-linear hover:translate-x-[-1.24px]">
+								<a
+									rel="noopener"
+									class="flex items-center gap-1 rounded-md bg-blue-50 px-3 py-2 font-medium text-blue-700"
+									target="_blank"
+									href={link.someLink}
+								>
+									{link.nameLink}
+									<LinkTarget />
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+			<div>
+				<span class="font-bold text-zinc-600">Прочее</span>
+				<ul class="mt-4 flex flex-col gap-1">
+					{
+						moreLinks.map(link => (
+							<li class="self-start transition-all ease-linear hover:translate-x-[-1.24px]">
+								<a
+									rel="noopener"
+									target="_blank"
+									class="flex items-center gap-1 rounded-md bg-blue-50 px-3 py-2 font-medium text-blue-700"
+									href={link.someLink}
+								>
+									{link.nameLink}
+									<LinkTarget />
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+		<hr class="my-5 border-zinc-200/80" />
+		<div class="flex items-center justify-between">
+			<span>Анонимные Прокрастинаторы</span>
+			<span>2024</span>
+		</div>
+	</div>
+</footer>

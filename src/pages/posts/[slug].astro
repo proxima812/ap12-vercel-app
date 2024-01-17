@@ -1,34 +1,31 @@
 ---
-import Layout from '@/layouts/Layout.astro'
-import formatDate from '@/utils/formatDate'
-import { getCollection } from 'astro:content'
+import Layout from "@/layouts/Layout.astro"
+import formatDate from "@/utils/formatDate"
+import { getCollection } from "astro:content"
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts')
+	const posts = await getCollection("posts")
 
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
-  }))
+	return posts.map(post => ({
+		params: { slug: post.slug },
+		props: { post },
+	}))
 }
-
-export const prerender = true
 
 const { post } = Astro.props
 const { Content } = await post.render()
 ---
 
 <Layout title={post.data.title} description={post.data.description} type="article">
-  <main>
-    <header role="presentation" class="mb-12">
-      <h1 class="text-sm">
-        {post.data.title} - {formatDate(post.data.publishedAt)}
-      </h1>
-      <p class="text-sm italic">{post.data.description}</p>
-    </header>
+	<aside class="flex flex-col gap-3">
+		<h1 class="text-5xl font-black">{post.data.title}</h1>
+		<p class="text-lg text-zinc-600">{post.data.description}</p>
+		<span>{formatDate(post.data.pubDate)}</span>
+	</aside>
 
-    <div class="md:prose-md prose prose-invert max-w-4xl lg:prose-lg xl:prose-xl">
-      <Content />
-    </div>
-  </main>
+	<main
+		class="md:prose-md prose prose-zinc mt-6 max-w-none rounded-xl bg-zinc-50 px-4 py-3 lg:prose-lg xl:prose-xl md:px-8 md:py-5"
+	>
+		<Content />
+	</main>
 </Layout>
