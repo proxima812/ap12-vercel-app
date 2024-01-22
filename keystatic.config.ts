@@ -1,17 +1,5 @@
 import { collection, config, fields } from "@keystatic/core"
 
-const isProd = import.meta.env.PROD
-
-// isProd
-//     ? {
-//         kind: 'github',
-//         repo: {
-//           owner: '',
-//           name: '',
-//         },
-//       }
-//     :
-
 export default config({
 	storage: { kind: "local" },
 	collections: {
