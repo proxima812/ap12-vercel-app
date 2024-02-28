@@ -20,7 +20,7 @@ const { Content } = await post.render()
 	<aside class="flex flex-col gap-3">
 		<h1 class="text-5xl font-black">{post.data.title}</h1>
 		<p class="text-lg text-zinc-600">{post.data.description}</p>
-		<span>{formatDate(post.data.pubDate)}</span>
+		<span class="underline">📅 {formatDate(post.data.pubDate)}</span>
 	</aside>
 
 	<main
